@@ -98,7 +98,11 @@ python build_mod.py --py27 D:\Python27\python.exe
 
 
 
-```markdown
+
+
+
+
+
 # WoT Blacklist Cleaner
 
 A local tool for *World of Tanks*: export your in-game blacklist to a spreadsheet, identify players who have been offline for a long time based on their "last battle time", clean them up in batches by list, and output an auditable deletion report.
