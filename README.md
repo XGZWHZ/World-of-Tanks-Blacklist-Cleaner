@@ -51,7 +51,7 @@
 4. 双击 `4_查看黑名单.bat` 查看结果。
 5. 双击 `5_清理黑名单中长期不在线玩家.bat`，先预览，再部署删除。
 
-详细步骤见 `docs/坦克世界黑名单工具说明.docx`。
+
 
 ---
 
@@ -80,7 +80,7 @@ python build_mod.py --py27 D:\Python27\python.exe
   `Account.requestPlayerInfo` 取档案，`contacts.removeIgnored(dbID, False)` 删除；
 - 档案时间：`dossiers2.getAccountDossierDescr(dossier)['total']['lastBattleTime']`。
 
-详见 `docs/代码原理详解.docx`。
+
 
 ---
 
@@ -156,7 +156,7 @@ A local tool for *World of Tanks*: export your in-game blacklist to a spreadshee
 4. Double-click `4_查看黑名单.bat` to view the results.
 5. Double-click `5_清理黑名单中长期不在线玩家.bat`; preview first, then deploy deletions.
 
-For detailed steps, see `docs/坦克世界黑名单工具说明.docx`.
+
 
 ---
 
@@ -185,7 +185,7 @@ Packaging notes (see Chapter 7 of the user guide for details):
   `Account.requestPlayerInfo` to get profiles, and `contacts.removeIgnored(dbID, False)` to delete;
 - Dossier time: `dossiers2.getAccountDossierDescr(dossier)['total']['lastBattleTime']`.
 
-See `docs/代码原理详解.docx` for details.
+
 
 ---
 
