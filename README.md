@@ -87,3 +87,108 @@ python build_mod.py --py27 D:\Python27\python.exe
 ## 免责声明
 
 本项目仅供学习与个人管理使用。客户端 MOD 属非官方修改，存在版本失效与规则风险；使用造成的任何后果由使用者自行承担。
+
+技术支持：DeepSeek DSH
+
+
+
+
+
+
+
+
+
+```markdown
+# WoT Blacklist Cleaner
+
+A local tool for *World of Tanks*: export your in-game blacklist to a spreadsheet, identify players who have been offline for a long time based on their "last battle time", clean them up in batches by list, and output an auditable deletion report.
+
+> ⚠️ This tool only operates on the "blacklist (ignore list)" and will not affect friends. All data stays local and is not uploaded.
+> Batch deletion carries risks. It is recommended to verify with a small list first.
+
+---
+
+## Features
+
+| Step | Tool | Description |
+| --- | --- | --- |
+| 1 | `1_环境检查.bat` | Checks for Python; if missing, silently installs it using the bundled installer; prints an environment report |
+| 2 | `2_安装MOD.bat` | Automatically detects the game directory and client version, and installs the MOD into `mods/<version>/` |
+| 3 | `3_在线查询黑名单最后战斗时间.bat` | Uses official public pages to fill in last battle time (CN/NA/EU/ASIA) |
+| 4 | `4_查看黑名单.bat` | Generates `黑名单列表.xlsx` |
+| 5 | `5_清理黑名单中长期不在线玩家.bat` | Filters / deploys deletions / generates a deletion report |
+
+- Supported regions: CN `wotgame.cn`, NA `worldoftanks.com`, EU `worldoftanks.eu`, ASIA `worldoftanks.asia`
+- External tools have **zero third-party dependencies**: Python 3.8+ is sufficient; when `openpyxl` is unavailable, the built-in `mini_xlsx` is used to write xlsx directly
+- Query scheduling: async I/O + global token bucket + AIMD dynamic rate adjustment + random jitter
+
+---
+
+## Directory Structure
+
+```
+.
+├─ 1_环境检查.bat / 2_安装MOD.bat / 3_... / 4_... / 5_...
+├─ mod/blacklist_exporter_2.0.2.wotmod   In-game MOD (compiled)
+├─ src/                                  MOD source code (corresponds to .pyc)
+│  ├─ meta.xml
+│  └─ res/scripts/client/gui/mods/*.py
+├─ build_mod.py                          Recompile and package the wotmod
+├─ tools/                                External script source code
+├─ docs/
+│  ├─ 坦克世界黑名单工具说明.docx        User guide (including .wotmod packaging)
+│  └─ 代码原理详解.docx                  Function-by-function algorithm explanation
+├─ 使用效果/                             UI screenshots
+└─ ——使用前请先阅读——.txt
+```
+
+---
+
+## Quick Start
+
+1. Extract the archive and double-click `1_环境检查.bat` (Python will be installed automatically if missing).
+2. Double-click `2_安装MOD.bat`, launch the game and enter the garage, then wait about 20 seconds for `blacklist_export.json` to be generated.
+3. Double-click `3_在线查询黑名单最后战斗时间.bat`, select your region on first run, and wait for the query to finish.
+4. Double-click `4_查看黑名单.bat` to view the results.
+5. Double-click `5_清理黑名单中长期不在线玩家.bat`; preview first, then deploy deletions.
+
+For detailed steps, see `docs/坦克世界黑名单工具说明.docx`.
+
+---
+
+## MOD Source and Packaging
+
+`src/` contains the source code for the `.pyc` files inside `mod/*.wotmod`; the bytecode has been compared item by item and matches. To repackage after modification:
+
+```bash
+# Requires Python 2.7 (same version as the client)
+python build_mod.py --py27 D:\Python27\python.exe
+```
+
+Packaging notes (see Chapter 7 of the user guide for details):
+
+1. The client only loads `.pyc` files (Python 2.7, magic `03 f3 0d 0a`);
+2. The ZIP must use **STORED (no compression)**; deflate will cause `compression not supported`;
+3. `meta.xml` must be in the package root; the description should preferably be pure ASCII;
+4. The installation directory name must equal the version in `version.xml` (e.g. `2.4.1.1`).
+
+---
+
+## Technical Notes
+
+- The blacklist is stored in the server-side contacts service (XMPP block list); locally there is only an encrypted cache;
+- Client APIs: use `descriptor._STORAGE[UsersStorage]` to get contacts,
+  `Account.requestPlayerInfo` to get profiles, and `contacts.removeIgnored(dbID, False)` to delete;
+- Dossier time: `dossiers2.getAccountDossierDescr(dossier)['total']['lastBattleTime']`.
+
+See `docs/代码原理详解.docx` for details.
+
+---
+
+## Disclaimer
+
+This project is for learning and personal management purposes only. Client MODs are unofficial modifications and carry risks of version breakage and rule violations; any consequences arising from use are borne solely by the user.
+
+Powered by DeepSeek DSH
+```
+
