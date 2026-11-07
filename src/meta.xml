@@ -1,0 +1,6 @@
+<root>
+	<id>com.deepseek.wot.blacklistexporter</id>
+	<version>2.0.2</version>
+	<name>Blacklist Exporter</name>
+	<description>Export blacklist contacts and last battle time to JSON</description>
+</root>
